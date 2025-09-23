@@ -1,0 +1,32 @@
+# DiscraftSync Linked Accounts Storage
+# This file stores the mapping between Discord IDs and Minecraft IGNs
+# 
+# Format:
+# linkedAccounts:
+#   "DISCORD_USER_ID": 
+#     ign: "MinecraftIGN"
+#     linked-date: "2025-01-15T10:30:45Z"
+#     last-sync: "2025-01-15T11:45:20Z"
+#
+# WARNING: Do not manually edit this file unless you know what you're doing!
+# Use the /unlink command instead to safely remove links.
+
+# Linked account data
+linkedAccounts: {}
+
+# Metadata
+metadata:
+  version: "1.0.0"
+  last-updated: ""
+  total-links: 0
+
+# Example entries (remove these when plugin is used):
+# linkedAccounts:
+#   "123456789012345678":
+#     ign: "PlayerName"
+#     linked-date: "2025-01-15T10:30:45Z"
+#     last-sync: "2025-01-15T11:45:20Z"
+#   "234567890123456789":
+#     ign: "AnotherPlayer"  
+#     linked-date: "2025-01-14T15:20:10Z"
+#     last-sync: "2025-01-15T09:15:30Z"

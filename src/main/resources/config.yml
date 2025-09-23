@@ -1,0 +1,85 @@
+# DiscraftSync Configuration File
+# Plugin by Hode - https://hode.lol
+
+# Discord Bot Settings
+discord:
+  # Your Discord Bot Token (Get from https://discord.com/developers/applications)
+  token: "YOUR_DISCORD_BOT_TOKEN_HERE"
+  
+  # Your Discord Server (Guild) ID
+  guild-id: "YOUR_DISCORD_GUILD_ID_HERE"
+
+# Server Information
+server:
+  # Your server IP that players should connect to
+  ip: "hode.lol"
+  
+  # Server name (used in messages)
+  name: "Hode's Server"
+
+# Synchronization Settings
+sync:
+  # Discord role ID that can use admin commands (/unlink, /resync, etc.)
+  admin-role: "999999999999999999"
+  
+  # Default settings for newly linked accounts
+  default:
+    # Discord role given to users after successful linking
+    discord-role: "123456789012345678"
+    
+    # LuckPerms group given to users after successful linking
+    luckperms-group: "default"
+
+# Logging Settings
+logging:
+  # Discord channel ID where events will be logged
+  channel-id: "888888888888888888"
+  
+  # Enable/disable logging
+  enabled: true
+  
+  # What events to log
+  events:
+    linking: true      # Log when accounts are linked
+    unlinking: true    # Log when accounts are unlinked
+    role-sync: true    # Log role synchronization events
+    errors: true       # Log error events
+
+# Verification Code Settings
+verification:
+  # Length of verification codes (4-8 recommended)
+  code-length: 4
+  
+  # How long codes are valid (in seconds)
+  expires-seconds: 300
+  
+  # Allow uppercase letters in codes
+  use-uppercase: true
+  
+  # Allow numbers in codes  
+  use-numbers: true
+
+# Message Settings
+messages:
+  # Language/locale for messages (future feature)
+  language: "en"
+  
+  # Enable colored messages in Minecraft chat
+  colored-chat: true
+  
+  # Prefix for plugin messages
+  prefix: "&8[&9Discraft&bSync&8]&r "
+
+# Advanced Settings
+advanced:
+  # Enable debug mode (verbose logging)
+  debug: false
+  
+  # Auto-sync roles when players join the server
+  sync-on-join: true
+  
+  # Check for role updates every X minutes (0 to disable)
+  auto-sync-interval: 30
+  
+  # Maximum number of verification attempts per user
+  max-verification-attempts: 3

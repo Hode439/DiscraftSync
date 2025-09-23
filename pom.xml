@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.hode</groupId>
+    <artifactId>discraftsync</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+
+    <name>DiscraftSync</name>
+    <description>Minecraft Discord account linking and role synchronization plugin</description>
+    <url>https://hode.lol</url>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <repositories>
+        <!-- Spigot Repository -->
+        <repository>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+        
+        <!-- LuckPerms Repository -->
+        <repository>
+            <id>luck-repo</id>
+            <url>https://repo.lucko.me/</url>
+        </repository>
+
+        <!-- JDA Repository -->
+        <repository>
+            <id>dv8tion</id>
+            <name>m2-dv8tion</name>
+            <url>https://m2.dv8tion.net/releases</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <!-- Spigot API -->
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.8.8-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Lightweight JDA -->
+        <dependency>
+            <groupId>net.dv8tion</groupId>
+            <artifactId>JDA</artifactId>
+            <version>5.0.0-beta.24</version>
+            <exclusions>
+                <!-- Remove ALL audio-related dependencies -->
+                <exclusion>
+                    <groupId>club.minnced</groupId>
+                    <artifactId>opus-java</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.java.dev.jna</groupId>
+                    <artifactId>jna</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.java.dev.jna</groupId>
+                    <artifactId>jna-platform</artifactId>
+                </exclusion>
+                <!-- Remove websocket client (we'll use default) -->
+                <exclusion>
+                    <groupId>com.neovisionaries</groupId>
+                    <artifactId>nv-websocket-client</artifactId>
+                </exclusion>
+                <!-- Remove unnecessary logging -->
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-classic</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- LuckPerms API -->
+        <dependency>
+            <groupId>net.luckperms</groupId>
+            <artifactId>api</artifactId>
+            <version>5.4</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>DiscraftSync-${project.version}</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <plugins>
+            <!-- Maven Compiler Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+
+            <!-- Ultra-Lightweight Shade Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.5.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Aggressively minimize JAR -->
+                            <minimizeJar>true</minimizeJar>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            
+                            <relocations>
+                                <relocation>
+                                    <pattern>net.dv8tion.jda</pattern>
+                                    <shadedPattern>com.hode.discraftsync.jda</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>okhttp3</pattern>
+                                    <shadedPattern>com.hode.discraftsync.okhttp3</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>okio</pattern>
+                                    <shadedPattern>com.hode.discraftsync.okio</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.fasterxml.jackson</pattern>
+                                    <shadedPattern>com.hode.discraftsync.jackson</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>gnu.trove</pattern>
+                                    <shadedPattern>com.hode.discraftsync.trove</shadedPattern>
+                                </relocation>
+                            </relocations>
+                            
+                            <filters>
+                                <!-- Keep only essential classes -->
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <!-- Remove metadata -->
+                                        <exclude>META-INF/**</exclude>
+                                        <!-- Remove documentation -->
+                                        <exclude>**/*.md</exclude>
+                                        <exclude>**/*.txt</exclude>
+                                        <exclude>**/*.xml</exclude>
+                                        <exclude>**/*.properties</exclude>
+                                        <exclude>**/*.html</exclude>
+                                        <!-- Remove native libraries -->
+                                        <exclude>natives/**</exclude>
+                                        <exclude>**/*-natives-*</exclude>
+                                        <!-- Remove audio/voice -->
+                                        <exclude>**/*opus*</exclude>
+                                        <exclude>**/*audio*</exclude>
+                                        <exclude>**/*voice*</exclude>
+                                        <exclude>**/*sound*</exclude>
+                                        <!-- Remove unused formats -->
+                                        <exclude>**/*.so</exclude>
+                                        <exclude>**/*.dll</exclude>
+                                        <exclude>**/*.dylib</exclude>
+                                        <!-- Remove debug symbols -->
+                                        <exclude>**/*.pdb</exclude>
+                                        <!-- Remove sources -->
+                                        <exclude>**/*-sources.jar</exclude>
+                                    </excludes>
+                                </filter>
+                                
+                                <!-- Keep only essential JDA classes -->
+                                <filter>
+                                    <artifact>net.dv8tion:JDA</artifact>
+                                    <includes>
+                                        <!-- Core JDA -->
+                                        <include>net/dv8tion/jda/api/**</include>
+                                        <include>net/dv8tion/jda/internal/**</include>
+                                        <!-- Remove voice/audio -->
+                                        <exclude>**/audio/**</exclude>
+                                        <exclude>**/voice/**</exclude>
+                                    </includes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

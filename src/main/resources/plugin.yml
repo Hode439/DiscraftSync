@@ -1,0 +1,41 @@
+name: DiscraftSync
+version: ${project.version}
+description: Minecraft Discord account linking and role synchronization plugin
+author: Hode
+website: https://hode.lol
+api-version: 1.8
+main: com.hode.discraftsync.DiscraftSync
+
+# Plugin dependencies
+depend: [LuckPerms]
+
+# Commands
+commands:
+  discraftsync:
+    description: Main DiscraftSync command for admins
+    aliases: [dsync, sync]
+    usage: /discraftsync
+    permission: discraftsync.admin
+  
+  linkstatus:
+    description: Check your Discord link status
+    aliases: [lstatus]
+    usage: /linkstatus
+    permission: discraftsync.use
+
+# Permissions
+permissions:
+  discraftsync.*:
+    description: Grants access to all DiscraftSync features
+    default: op
+    children:
+      discraftsync.admin: true
+      discraftsync.use: true
+      
+  discraftsync.admin:
+    description: Access to admin commands (sync, unlink others)
+    default: op
+    
+  discraftsync.use:
+    description: Basic plugin usage (check link status)
+    default: true
