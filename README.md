@@ -80,3 +80,6 @@ The compiled JAR will be in the `target/` folder.
 ## Issues
 
 Found a bug? Open an issue on GitHub with details about your setup and what went wrong.
+
+
+# Note; This plugin is made with the help of AI. I haven't bothered fixing the shitty code it spits out, use with caution.
